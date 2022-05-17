@@ -1,24 +1,29 @@
-import { useMemo } from "react";
+import React from "react";
+import { ReactNode, useMemo } from "react";
 import { createContext, useContext } from "react";
 import { useUserFacade, useUsersFacade } from "../facades";
 
 interface UsersFeatureContext {
-  user: ReturnType<typeof useUserFacade>;
-  users: ReturnType<typeof useUsersFacade>;
+  userFacade: ReturnType<typeof useUserFacade>;
+  usersFacade: ReturnType<typeof useUsersFacade>;
 }
 
 const Context = createContext<UsersFeatureContext | null>(null);
 
-export const WithUsersManagement = ({ children }) => {
-  const user = useUserFacade();
-  const users = useUsersFacade();
+interface WithUsersManagementProps {
+  children: ReactNode;
+}
+
+export const WithUsersManagement = ({ children }: WithUsersManagementProps) => {
+  const userFacade = useUserFacade();
+  const usersFacade = useUsersFacade();
 
   const value = useMemo(
     () => ({
-      user,
-      users
+      userFacade,
+      usersFacade
     }),
-    [user, users]
+    [userFacade, usersFacade]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

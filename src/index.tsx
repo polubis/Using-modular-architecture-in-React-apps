@@ -1,23 +1,10 @@
 import * as React from "react";
 import { render } from "react-dom";
-import { useLoginForm } from "./final";
+
+import { UsersManagement } from "./modules/users-management";
 
 function App() {
-  const [data, errors, change] = useLoginForm();
-
-  return (
-    <form>
-      <input name="login" value={data.login} onChange={change} />
-      <p>{errors.login}</p>
-      <input
-        name="password"
-        type="password"
-        value={data.password}
-        onChange={change}
-      />
-      <p>{errors.password}</p>
-    </form>
-  );
+  return <UsersManagement />;
 }
 
 const rootElement = document.getElementById("root");

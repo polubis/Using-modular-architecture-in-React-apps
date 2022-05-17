@@ -1,14 +1,12 @@
 import React from "react";
+import { UsersManagementContainer } from "./containers";
 
-import UsersList from "./components/users-list/UsersList";
-import UserDetails from "./components/user-details/UserDetails";
-import { WithUsersFeature } from "./providers/WithUsersFeature";
+import { WithUsersManagement } from "./providers/WithUsersManagement";
 
 export function UsersManagement() {
   return (
-    <WithUsersFeature>
-      <UsersList />
-      <UserDetails />
-    </WithUsersFeature>
+    <WithUsersManagement>
+      <UsersManagementContainer />
+    </WithUsersManagement>
   );
 }
