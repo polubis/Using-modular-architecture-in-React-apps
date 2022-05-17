@@ -23,7 +23,5 @@ export const useUsersFilter = (users: User[]) => {
     query
   ]);
 
-  console.log(query, filteredUsers);
-
   return [query, filteredUsers, triggerUsersFilter] as const;
 };

@@ -17,8 +17,13 @@ export const useUserFacade = () => {
     })();
   };
 
+  const reset = () => {
+    setUser(user.idle());
+  };
+
   return {
     user: user.valueOf(),
+    reset,
     load
   };
 };

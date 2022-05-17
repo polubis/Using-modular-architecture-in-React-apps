@@ -25,7 +25,11 @@ export function UsersList({
 
   return (
     <ul className={`users-list ${className}`}>
-      <input value={query} onChange={filterData} />
+      <input
+        value={query}
+        placeholder="Type phrase to search..."
+        onChange={filterData}
+      />
       {filteredData.length === 0 && (
         <div>No results for given phrase {query}</div>
       )}
