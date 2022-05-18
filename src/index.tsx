@@ -1,10 +1,10 @@
 import * as React from "react";
 import { render } from "react-dom";
 
-import { UsersManagement } from "./modules/users-management";
+import { UsersManagementModule } from "./modules/users-management";
 
 function App() {
-  return <UsersManagement />;
+  return <UsersManagementModule />;
 }
 
 const rootElement = document.getElementById("root");

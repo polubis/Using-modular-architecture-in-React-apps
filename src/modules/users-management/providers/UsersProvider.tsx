@@ -10,11 +10,11 @@ interface UsersFeatureContext {
 
 const Context = createContext<UsersFeatureContext | null>(null);
 
-interface WithUsersManagementProps {
+interface UsersProviderProps {
   children: ReactNode;
 }
 
-export const WithUsersManagement = ({ children }: WithUsersManagementProps) => {
+export const UsersProvider = ({ children }: UsersProviderProps) => {
   const userFacade = useUserFacade();
   const usersFacade = useUsersFacade();
 
@@ -29,7 +29,7 @@ export const WithUsersManagement = ({ children }: WithUsersManagementProps) => {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-export const useUsersManagement = () => {
+export const useUsersProvider = () => {
   const ctx = useContext(Context);
 
   if (!ctx) throw new Error("Lack of provider");

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { UserId } from "../services/models";
-import { usersService } from "../services/services";
+import { usersService } from "../services";
 import { userVO } from "../value-objects";
 
 export const useUserFacade = () => {

@@ -2,21 +2,21 @@ import React from "react";
 import { User } from "../../services/models";
 import { useUsersFilter } from "../../utils/useUsersFilter";
 
-import "./UsersList.css";
+import "./UsersListComponent.css";
 
-interface UsersListProps {
+interface UsersListComponentProps {
   className?: string;
   loading: boolean;
   data: User[];
   onClick: (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => void;
 }
 
-export function UsersList({
+export function UsersListComponent({
   className,
   loading,
   data,
   onClick
-}: UsersListProps) {
+}: UsersListComponentProps) {
   const [query, filteredData, filterData] = useUsersFilter(data);
 
   if (loading) {

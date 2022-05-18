@@ -1,11 +1,11 @@
 import React from "react";
 import { UsersManagementContainer } from "./containers";
-import { WithUsersManagement } from "./providers";
+import { UsersProvider } from "./providers";
 
-export function UsersManagement() {
+export function UsersManagementModule() {
   return (
-    <WithUsersManagement>
+    <UsersProvider>
       <UsersManagementContainer />
-    </WithUsersManagement>
+    </UsersProvider>
   );
 }

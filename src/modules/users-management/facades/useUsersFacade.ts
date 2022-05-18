@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { usersService } from "../services/services";
+import { usersService } from "../services";
 import { usersVO } from "../value-objects";
 
 export const useUsersFacade = () => {

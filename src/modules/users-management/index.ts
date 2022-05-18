@@ -1,1 +1,1 @@
-export * from "./UsersManagement";
+export * from "./UsersManagementModule";

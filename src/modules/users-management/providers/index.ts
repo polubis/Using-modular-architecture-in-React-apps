@@ -1,1 +1,1 @@
-export * from "./WithUsersManagement";
+export * from "./UsersProvider";
