@@ -60,15 +60,21 @@ export const SM = <C extends Obj, K extends { key: keyof C; data?: any }>(
   config: C,
   initState: State<C>[K["key"]]
 ) => {
-  const create = (...predicates: Predicate<C>[]) => {
-    return {
-      ...config,
-      get: <CK extends keyof C>(key: CK) => initState as State<C>[CK],
-      is: <CK extends keyof C>(key: CK) => key === initState.key
-    };
-  };
+  return (...predicates: Predicate<C>[]) => {
+    const next = (currentState: State<C>[K["key"]]) => {
+      const enhancedConfig = Object.entries(
+        config
+      ).reduce((acc, [key, fn]) => {}, {});
 
-  return create;
+      return {
+        ...config,
+        get: <CK extends keyof C>(key: CK) => initState as State<C>[CK],
+        is: <CK extends keyof C>(key: CK) => key === initState.key
+      };
+    };
+
+    return next(initState);
+  };
 };
 
 const test = {
