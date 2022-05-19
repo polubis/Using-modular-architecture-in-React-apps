@@ -33,7 +33,7 @@
 import { User } from "../services";
 
 type Obj = {
-  [key: string]: unknown;
+  [key: string]: (() => void) | ((data: any) => any);
 };
 
 type GetFirstArgumentOfAnyFunction<T> = T extends (
@@ -43,85 +43,50 @@ type GetFirstArgumentOfAnyFunction<T> = T extends (
   ? FirstArgument
   : never;
 
-// ((data: any) => any) | (() => void);
+type Predicate<C extends Obj> = {
+  [K in keyof C]?: keyof C | (keyof C)[];
+};
 
-type Configurable<C extends Obj> = {
+type State<C extends Obj> = {
   [K in keyof C]: C[K] extends () => void
-    ? () => void
-    : (
-        data: GetFirstArgumentOfAnyFunction<C[K]>
-      ) => GetFirstArgumentOfAnyFunction<C[K]>;
+    ? { key: K }
+    : {
+        key: K;
+        data: GetFirstArgumentOfAnyFunction<C[K]>;
+      };
 };
 
-interface Predicate<K> {
-  from: K;
-  to: K | K[];
-}
-
-const SM = <C extends Obj>(config: C) => {
-  const keys = Object.keys(config);
-
-  return (...predicates: Predicate<keyof C>[]): Configurable<C> => {
-    return keys.reduce((acc, key) => {}, {} as any);
+export const SM = <C extends Obj, K extends { key: keyof C; data?: any }>(
+  config: C,
+  initState: State<C>[K["key"]]
+) => {
+  const create = (...predicates: Predicate<C>[]) => {
+    return {
+      ...config,
+      get: <CK extends keyof C>(key: CK) => initState as State<C>[CK],
+      is: <CK extends keyof C>(key: CK) => key === initState.key
+    };
   };
+
+  return create;
 };
 
-const userSM = SM({
+const test = {
   idle: () => {},
   loading: () => {},
   loaded: (data: User) => data,
   loaded2: (data: { id: number }) => data,
   error: () => {}
-})(
-  {
-    from: "idle",
-    to: "loading"
-  },
-  {
-    from: "loading",
-    to: ["loaded", "error"]
-  },
-  {
-    from: "loaded",
-    to: "idle"
-  },
-  {
-    from: "error",
-    to: "idle"
-  }
+};
+
+const userSM = SM(test, { key: "idle" })(
+  { idle: "loading" },
+  { loading: ["loaded", "error"] },
+  { loaded: "idle" },
+  { error: "idle" }
 );
 
-// const userSM = SM.config({
-//   loading: () => ({}),
-//   loaded: (data: User) => ({ data }),
-//   error: () => ({})
-// }).allow(
-// {
-//   from: "idle",
-//   to: "loading"
-// },
-// {
-//   from: 'loading',
-//   to: ['loaded', 'error']
-// },
-// {
-//   from: 'loaded',
-//   to: 'idle'
-// },
-// {
-//   from: 'error',
-//   to: 'idle'
-// }
-// );
+type s = GetFirstArgumentOfAnyFunction<typeof test["loaded"]>;
 
-// userSM.idle();
-// userSM.loading();
-// userSM.loaded(user);
-// userSM.error();
-// userSM.stateOf() => {key: '', data }
-
-// type t = StateMachineConfig<{
-//   loading: () => {};
-//   loaded: () => {},;
-//   error: () => {},;
-// }>;
+userSM.is("loading");
+userSM.get("loaded");
